@@ -160,9 +160,9 @@ HeaderSection::HeaderSection() : SynthSection("header_section"), tab_offset_(0) 
   addAndMakeVisible(tab_selector_.get());
   addOpenGlComponent(tab_selector_->getImageComponent());
   tab_selector_->setSliderStyle(Slider::LinearBar);
-  tab_selector_->setRange(0, 3);
+  tab_selector_->setRange(0, 4);
   tab_selector_->addListener(this);
-  tab_selector_->setNames({"VOICE", "EFFECTS", "MATRIX", "ADVANCED"});
+  tab_selector_->setNames({"VOICE", "EFFECTS", "MATRIX", "ADVANCED", "SIGNAL"});
   tab_selector_->setScrollWheelEnabled(false);
 
   synth_preset_selector_ = std::make_unique<SynthPresetSelector>();
@@ -241,7 +241,7 @@ void HeaderSection::resized() {
   int logo_width = findValue(Skin::kModulationButtonWidth);
   logo_section_->setBounds(large_padding, 0, logo_width, height);
 
-  int preset_selector_width = width / 3;
+  int preset_selector_width = width / 3.5;
   int preset_selector_height = height * 0.6f;
   int preset_selector_buffer = (height - preset_selector_height) * 0.5f;
   int preset_selector_x = (getWidth() - preset_selector_width + 2 * preset_selector_height) / 2;

@@ -76,6 +76,10 @@ FullInterface::FullInterface(SynthGuiData* synth_data) : SynthSection("full_inte
   effects_interface_->setVisible(false);
   effects_interface_->addListener(this);
 
+  signal_interface_ = std::make_unique<SynthSection>("signal");
+  addSubSection(signal_interface_.get());
+  signal_interface_->setVisible(false);
+
   master_controls_interface_ = std::make_unique<MasterControlsInterface>(synth_data->mono_modulations,
                                                                          synth_data->poly_modulations,
                                                                          synth);
@@ -179,6 +183,7 @@ FullInterface::FullInterface(SynthGuiData* synth_data) : SynthSection("full_inte
 
   master_controls_interface_->toFront(true);
   effects_interface_->toFront(true);
+  signal_interface_->toFront(true);
   modulation_interface_->toFront(true);
   extra_mod_section_->toFront(true);
   keyboard_interface_->toFront(true);
@@ -504,6 +509,7 @@ void FullInterface::resized() {
       master_controls_interface_->setOscillatorBounds(i, synthesis_interface_->getOscillatorBounds(i));
   }
   master_controls_interface_->setBounds(main_bounds);
+  signal_interface_->setBounds(main_bounds);
 
   if (full_screen_section_) {
     Rectangle<float> relative = synthesis_interface_->getOscillatorSection(0)->getWavetableRelativeBounds();
@@ -657,6 +663,7 @@ void FullInterface::tabSelected(int index) {
   effects_interface_->setVisible(index == 1 && make_visible);
   modulation_matrix_->setVisible(index == 2 && make_visible);
   master_controls_interface_->setVisible(index == 3 && make_visible);
+  signal_interface_->setVisible(index == 4 && make_visible);
   modulation_manager_->setModulationAmounts();
   modulation_manager_->resized();
   modulation_manager_->setVisibleMeterBounds();
