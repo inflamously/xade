@@ -83,6 +83,7 @@ SynthEditor::SynthEditor(bool use_gui) : SynthGuiInterface(this, use_gui) {
 
 SynthEditor::~SynthEditor() {
   PopupMenu::dismissAllActiveMenus();
+  deviceManager.removeMidiInputCallback("", midi_manager_.get());
   shutdownAudio();
 }
 
