@@ -377,7 +377,7 @@
     <ClCompile Include="..\..\..\src\interface\editor_sections\header_section.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\interface\editor_sections\signal_interface.cpp">
+    <ClCompile Include="..\..\..\src\interface\editor_sections\world_signal_interface.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\src\interface\editor_sections\keyboard_interface.cpp">
@@ -2845,7 +2845,7 @@
     <ClInclude Include="..\..\..\src\interface\editor_sections\flanger_section.h" />
     <ClInclude Include="..\..\..\src\interface\editor_sections\full_interface.h" />
     <ClInclude Include="..\..\..\src\interface\editor_sections\header_section.h" />
-    <ClInclude Include="..\..\..\src\interface\editor_sections\signal_interface.h" />
+    <ClInclude Include="..\..\..\src\interface\editor_sections\world_signal_interface.h" />
     <ClInclude Include="..\..\..\src\interface\editor_sections\keyboard_interface.h" />
     <ClInclude Include="..\..\..\src\interface\editor_sections\lfo_section.h" />
     <ClInclude Include="..\..\..\src\interface\editor_sections\macro_knob_section.h" />

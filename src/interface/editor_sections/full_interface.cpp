@@ -38,7 +38,7 @@
 #include "overlay.h"
 #include "portamento_section.h"
 #include "preset_browser.h"
-#include "signal_interface.h"
+#include "world_signal_interface.h"
 #include "synthesis_interface.h"
 #include "synth_gui_interface.h"
 #include "text_look_and_feel.h"
@@ -77,9 +77,9 @@ FullInterface::FullInterface(SynthGuiData* synth_data) : SynthSection("full_inte
   effects_interface_->setVisible(false);
   effects_interface_->addListener(this);
 
-  signal_interface_ = std::make_unique<SignalInterface>();
-  addSubSection(signal_interface_.get());
-  signal_interface_->setVisible(false);
+  world_signal_interface_ = std::make_unique<WorldSignalInterface>();
+  addSubSection(world_signal_interface_.get());
+  world_signal_interface_->setVisible(false);
 
   master_controls_interface_ = std::make_unique<MasterControlsInterface>(synth_data->mono_modulations,
                                                                          synth_data->poly_modulations,
@@ -184,7 +184,7 @@ FullInterface::FullInterface(SynthGuiData* synth_data) : SynthSection("full_inte
 
   master_controls_interface_->toFront(true);
   effects_interface_->toFront(true);
-  signal_interface_->toFront(true);
+  world_signal_interface_->toFront(true);
   modulation_interface_->toFront(true);
   extra_mod_section_->toFront(true);
   keyboard_interface_->toFront(true);
@@ -510,7 +510,7 @@ void FullInterface::resized() {
       master_controls_interface_->setOscillatorBounds(i, synthesis_interface_->getOscillatorBounds(i));
   }
   master_controls_interface_->setBounds(main_bounds);
-  signal_interface_->setBounds(main_bounds);
+  world_signal_interface_->setBounds(main_bounds);
 
   if (full_screen_section_) {
     Rectangle<float> relative = synthesis_interface_->getOscillatorSection(0)->getWavetableRelativeBounds();
@@ -664,7 +664,7 @@ void FullInterface::tabSelected(int index) {
   effects_interface_->setVisible(index == 1 && make_visible);
   modulation_matrix_->setVisible(index == 2 && make_visible);
   master_controls_interface_->setVisible(index == 3 && make_visible);
-  signal_interface_->setVisible(index == 4 && make_visible);
+  world_signal_interface_->setVisible(index == 4 && make_visible);
   modulation_manager_->setModulationAmounts();
   modulation_manager_->resized();
   modulation_manager_->setVisibleMeterBounds();

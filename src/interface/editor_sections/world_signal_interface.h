@@ -52,10 +52,10 @@ class WorldMapGrid : public OpenGlImageComponent {
 //   2. A grid of lines (~16x16px).                         done
 //   3. An origin dot at grid 0,0 (centre of the view).     done
 //   4. Drag/pan the grid; ctrl+click recenters.            <-- current
-class SignalInterface : public SynthSection {
+class WorldSignalInterface : public SynthSection {
   public:
-    SignalInterface();
-    ~SignalInterface();
+    WorldSignalInterface();
+    ~WorldSignalInterface();
 
     void paintBackground(Graphics& g) override;
     void resized() override;
@@ -75,5 +75,5 @@ class SignalInterface : public SynthSection {
     float pan_start_x_;
     float pan_start_y_;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SignalInterface)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WorldSignalInterface)
 };

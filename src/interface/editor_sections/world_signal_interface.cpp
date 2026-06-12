@@ -14,7 +14,7 @@
  * along with vital.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "signal_interface.h"
+#include "world_signal_interface.h"
 
 #include "skin.h"
 
@@ -71,7 +71,7 @@ void WorldMapGrid::paintToImage(Graphics& g) {
   }
 }
 
-SignalInterface::SignalInterface() : SynthSection("signal"),
+WorldSignalInterface::WorldSignalInterface() : SynthSection("world_signal"),
                                      dragging_(false), pan_start_x_(0.0f), pan_start_y_(0.0f) {
   setOpaque(false);
 
@@ -79,33 +79,33 @@ SignalInterface::SignalInterface() : SynthSection("signal"),
   addOpenGlComponent(grid_.get());
 }
 
-SignalInterface::~SignalInterface() { }
+WorldSignalInterface::~WorldSignalInterface() { }
 
-void SignalInterface::paintBackground(Graphics& g) {
+void WorldSignalInterface::paintBackground(Graphics& g) {
   g.fillAll(kBackgroundColor);
   paintChildrenBackgrounds(g);
 }
 
-void SignalInterface::resized() {
+void WorldSignalInterface::resized() {
   grid_->setGridSize(16.0f * size_ratio_);
   grid_->setBounds(getLocalBounds());
   SynthSection::resized();
 }
 
-void SignalInterface::resetWorldView() {
+void WorldSignalInterface::resetWorldView() {
     dragging_ = false;
     grid_->setPan(0.0f, 0.0f);
     grid_->redrawImage(true);
 }
 
-void SignalInterface::mouseDown(const MouseEvent& e) {
+void WorldSignalInterface::mouseDown(const MouseEvent& e) {
   dragging_ = true;
   drag_start_ = e.position;
   pan_start_x_ = grid_->getPanX();
   pan_start_y_ = grid_->getPanY();
 }
 
-void SignalInterface::mouseDrag(const MouseEvent& e) {
+void WorldSignalInterface::mouseDrag(const MouseEvent& e) {
   if (!dragging_)
     return;
 
@@ -114,7 +114,7 @@ void SignalInterface::mouseDrag(const MouseEvent& e) {
   grid_->redrawImage(true);
 }
 
-void SignalInterface::mouseDoubleClick(const MouseEvent& event)
+void WorldSignalInterface::mouseDoubleClick(const MouseEvent& event)
 {
     if (event.mods.isCtrlDown()) {
         // Ctrl+click recenters the view on the origin.
