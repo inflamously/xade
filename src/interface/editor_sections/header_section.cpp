@@ -241,7 +241,7 @@ void HeaderSection::resized() {
   int logo_width = findValue(Skin::kModulationButtonWidth);
   logo_section_->setBounds(large_padding, 0, logo_width, height);
 
-  int preset_selector_width = width / 3.5;
+  int preset_selector_width = width / 3;
   int preset_selector_height = height * 0.6f;
   int preset_selector_buffer = (height - preset_selector_height) * 0.5f;
   int preset_selector_x = (getWidth() - preset_selector_width + 2 * preset_selector_height) / 2;

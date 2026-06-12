@@ -18,14 +18,40 @@
 
 #include "JuceHeader.h"
 #include "synth_section.h"
+#include "open_gl_image_component.h"
+
+// The pannable grid layer of the world map. Drawn into an OpenGL image so it
+// can be cheaply re-rendered when panned (no full-window background repaint).
+class WorldMapGrid : public OpenGlImageComponent {
+  public:
+    WorldMapGrid();
+
+    void paintToImage(Graphics& g) override;
+
+    // Grid spacing in pixels (defaults to 16).
+    void setGridSize(float size) { grid_size_ = size; }
+    float getGridSize() const { return grid_size_; }
+
+    // Pan offset, in pixels. Used in a later step to drag the grid around.
+    void setPan(float x, float y) { pan_x_ = x; pan_y_ = y; }
+    float getPanX() const { return pan_x_; }
+    float getPanY() const { return pan_y_; }
+
+  private:
+    float grid_size_;
+    float pan_x_;
+    float pan_y_;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WorldMapGrid)
+};
 
 // XO Lite style "world map" view.
 //
 // Built up in steps:
-//   1. Dark container that spans the full page.            <-- current
-//   2. A grid of lines (~16x16px).                         (todo)
-//   3. An origin dot at grid 0,0.                          (todo)
-//   4. Drag/pan the grid around.                           (todo)
+//   1. Dark container that spans the full page.            done
+//   2. A grid of lines (~16x16px).                         done
+//   3. An origin dot at grid 0,0 (centre of the view).     done
+//   4. Drag/pan the grid; ctrl+click recenters.            <-- current
 class SignalInterface : public SynthSection {
   public:
     SignalInterface();
@@ -34,6 +60,20 @@ class SignalInterface : public SynthSection {
     void paintBackground(Graphics& g) override;
     void resized() override;
 
+    void resetWorldView();
+
+    // Drag to pan the grid; ctrl+click recenters on the origin.
+    void mouseDown(const MouseEvent& e) override;
+    void mouseDrag(const MouseEvent& e) override;
+    void mouseDoubleClick(const MouseEvent& event) override;
+
   private:
+    std::unique_ptr<WorldMapGrid> grid_;
+
+    bool dragging_;
+    Point<float> drag_start_;
+    float pan_start_x_;
+    float pan_start_y_;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SignalInterface)
 };
