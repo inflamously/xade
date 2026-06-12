@@ -38,6 +38,7 @@
 #include "overlay.h"
 #include "portamento_section.h"
 #include "preset_browser.h"
+#include "signal_interface.h"
 #include "synthesis_interface.h"
 #include "synth_gui_interface.h"
 #include "text_look_and_feel.h"
@@ -76,7 +77,7 @@ FullInterface::FullInterface(SynthGuiData* synth_data) : SynthSection("full_inte
   effects_interface_->setVisible(false);
   effects_interface_->addListener(this);
 
-  signal_interface_ = std::make_unique<SynthSection>("signal");
+  signal_interface_ = std::make_unique<SignalInterface>();
   addSubSection(signal_interface_.get());
   signal_interface_->setVisible(false);
 

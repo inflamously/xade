@@ -777,6 +777,9 @@
     <ClCompile Include="..\..\..\src\interface\editor_sections\header_section.cpp">
       <Filter>Vial\src\interface\editor_sections</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\interface\editor_sections\signal_interface.cpp">
+      <Filter>Vial\src\interface\editor_sections</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\src\interface\editor_sections\keyboard_interface.cpp">
       <Filter>Vial\src\interface\editor_sections</Filter>
     </ClCompile>
@@ -3450,6 +3453,9 @@
       <Filter>Vial\src\interface\editor_sections</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\interface\editor_sections\header_section.h">
+      <Filter>Vial\src\interface\editor_sections</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\interface\editor_sections\signal_interface.h">
       <Filter>Vial\src\interface\editor_sections</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\interface\editor_sections\keyboard_interface.h">

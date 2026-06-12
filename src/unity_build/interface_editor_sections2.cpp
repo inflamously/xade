@@ -31,6 +31,7 @@
 #include "popup_browser.cpp"
 #include "keyboard_interface.cpp"
 #include "header_section.cpp"
+#include "signal_interface.cpp"
 #include "full_interface.cpp"
 #include "delete_section.cpp"
 #include "download_section.cpp"
