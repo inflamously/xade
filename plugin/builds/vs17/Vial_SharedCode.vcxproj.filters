@@ -3597,6 +3597,9 @@
     <ClInclude Include="..\..\..\src\interface\editor_sections\world_signal_interface.h">
       <Filter>Vial\src\interface\editor_sections</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\interface\editor_sections\world_signal_interface_dot.h">
+      <Filter>Vial\src\interface\editor_sections</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\src\interface\editor_sections\keyboard_interface.h">
       <Filter>Vial\src\interface\editor_sections</Filter>
     </ClInclude>
