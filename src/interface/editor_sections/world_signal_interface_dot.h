@@ -72,12 +72,12 @@ namespace world_signal {
   // free spot within the cap is simply dropped (the returned count may be less
   // than `count`).
   inline std::vector<WorldSignalDot> scatterDots(int count, juce::Random& random,
-                                                 float min_separation = 0.08f) {
+                                                 float min_separation = 0.16f) {
     std::vector<WorldSignalDot> dots;
     dots.reserve(juce::jmax(0, count));
 
     const float min_separation_sq = min_separation * min_separation;
-    const int max_attempts = 32;  // per dot, before giving up on a free spot
+    const int max_attempts = 16;  // per dot, before giving up on a free spot
 
     for (int i = 0; i < count; ++i) {
       for (int attempt = 0; attempt < max_attempts; ++attempt) {
@@ -87,8 +87,8 @@ namespace world_signal {
         juce::Point<float> position = dot.unitPosition();
 
         bool overlaps = false;
-        for (const auto& placed : dots) {
-          if (position.getDistanceSquaredFrom(placed.unitPosition()) < min_separation_sq) {
+        for (const auto& placedDot : dots) {
+          if (position.getDistanceSquaredFrom(placedDot.unitPosition()) < min_separation_sq || position.getDistanceSquaredFromOrigin() < min_separation_sq) {
             overlaps = true;
             break;
           }
