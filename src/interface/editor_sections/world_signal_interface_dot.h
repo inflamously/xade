@@ -49,6 +49,13 @@ struct WorldSignalDot {
     float distance = distanceFromOrigin(boundary_radius);
     return { std::cos(angle) * distance, std::sin(angle) * distance };
   }
+
+  // Position in the normalized unit disk (boundary radius == 1). Used by the
+  // scatter to keep dots from overlapping without needing the pixel boundary,
+  // so collisions stay stable as the view (and boundary) is resized.
+  juce::Point<float> unitPosition() const {
+    return { std::cos(angle) * signal_strength, std::sin(angle) * signal_strength };
+  }
 };
 
 namespace world_signal {
@@ -56,15 +63,42 @@ namespace world_signal {
   // circle and strengths span 0..1, so the dots spread across the whole world
   // up to the boundary. Pass a seeded juce::Random for reproducible results
   // (used by the test).
-  inline std::vector<WorldSignalDot> scatterDots(int count, juce::Random& random) {
+  //
+  // Collision: a candidate is rejected if it lands closer than
+  // `min_separation` (in normalized units, i.e. a fraction of the boundary
+  // radius) to an already-placed dot, so dots never sit on top of each other.
+  // Placement uses rejection sampling with a capped number of attempts per dot
+  // so a too-dense request can never loop forever -- a dot that can't find a
+  // free spot within the cap is simply dropped (the returned count may be less
+  // than `count`).
+  inline std::vector<WorldSignalDot> scatterDots(int count, juce::Random& random,
+                                                 float min_separation = 0.08f) {
     std::vector<WorldSignalDot> dots;
     dots.reserve(juce::jmax(0, count));
 
+    const float min_separation_sq = min_separation * min_separation;
+    const int max_attempts = 32;  // per dot, before giving up on a free spot
+
     for (int i = 0; i < count; ++i) {
-      WorldSignalDot dot;
-      dot.angle = random.nextFloat() * juce::MathConstants<float>::twoPi;
-      dot.signal_strength = random.nextFloat();
-      dots.push_back(dot);
+      for (int attempt = 0; attempt < max_attempts; ++attempt) {
+        WorldSignalDot dot;
+        dot.angle = random.nextFloat() * juce::MathConstants<float>::twoPi;
+        dot.signal_strength = random.nextFloat();
+        juce::Point<float> position = dot.unitPosition();
+
+        bool overlaps = false;
+        for (const auto& placed : dots) {
+          if (position.getDistanceSquaredFrom(placed.unitPosition()) < min_separation_sq) {
+            overlaps = true;
+            break;
+          }
+        }
+
+        if (!overlaps) {
+          dots.push_back(dot);
+          break;
+        }
+      }
     }
 
     return dots;

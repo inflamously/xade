@@ -26,8 +26,11 @@ void WorldSignalInterfaceTest::runTest() {
   beginTest("Scatter stays inside the boundary");
   {
     Random random(0x1234);
-    std::vector<WorldSignalDot> dots = world_signal::scatterDots(500, random);
-    expectEquals((int)dots.size(), 500);
+    // Collision rejection may drop dots that can't find a free spot, so the
+    // returned count is at most what we asked for (and here comfortably fits).
+    std::vector<WorldSignalDot> dots = world_signal::scatterDots(64, random);
+    expect(!dots.empty());
+    expect((int)dots.size() <= 64);
 
     for (const WorldSignalDot& dot : dots) {
       // Strength is a 0..1 difference value.
@@ -61,6 +64,22 @@ void WorldSignalInterfaceTest::runTest() {
     WorldSignalDot over;
     over.signal_strength = 5.0f;
     expectWithinAbsoluteError(over.distanceFromOrigin(kBoundaryRadius), kBoundaryRadius, kEpsilon);
+  }
+
+  beginTest("Scattered dots do not overlap");
+  {
+    const float kMinSeparation = 0.08f;
+    Random random(0x2468);
+    std::vector<WorldSignalDot> dots = world_signal::scatterDots(64, random, kMinSeparation);
+
+    // Every pair of placed dots must be at least min_separation apart in the
+    // normalized unit disk -- the collision guarantee.
+    for (size_t i = 0; i < dots.size(); ++i) {
+      for (size_t j = i + 1; j < dots.size(); ++j) {
+        float distance = dots[i].unitPosition().getDistanceFrom(dots[j].unitPosition());
+        expect(distance >= kMinSeparation - kEpsilon);
+      }
+    }
   }
 
   beginTest("Scatter is reproducible for a fixed seed");
